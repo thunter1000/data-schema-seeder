@@ -51,7 +51,97 @@ describe("Given a schema a fake is returned", () => {
     expect(result.person.name.lastName).toEqual(expect.stringMatching(/.+/))
   })
 
-  // it("Given a schema with an array", () => { // TODO allow generation of arrays
-  //   throw new Error("TODO implement")
-  // })
+  it("Given a schema with an array", () => {
+    const givenSchmea = `
+{
+  "people": [
+    { "quantity": 1 },
+    {
+      "firstName": "{{name.firstName}}",
+      "lastName": "{{name.lastName}}"
+    }
+  ]
+}`
+    const faker = new FakerFaker(givenSchmea)
+
+    const result = faker.Fake()
+
+    expect(result).toMatchInlineSnapshot(
+      {
+        people: [
+          {
+            firstName: expect.any(String),
+            lastName: expect.any(String),
+          },
+        ],
+      },
+      `
+      Object {
+        "people": Array [
+          Object {
+            "firstName": Any<String>,
+            "lastName": Any<String>,
+          },
+        ],
+      }
+    `
+    )
+  })
+
+  it("Given a schema with arrays inside arrays", () => {
+    const givenSchmea = `
+{
+  "people": [
+    { "quantity": 1 },
+    {
+      "pets": [
+        {
+          "quantity": 2
+        },
+        {
+          "name": "{{name.firstName}} {{name.lastName}}"
+        }
+      ]
+    }
+  ]
+}`
+
+    const faker = new FakerFaker(givenSchmea)
+
+    const result = faker.Fake()
+
+    expect(result).toMatchInlineSnapshot(
+      {
+        people: [
+          {
+            pets: [
+              {
+                name: expect.any(String),
+              },
+
+              {
+                name: expect.any(String),
+              },
+            ],
+          },
+        ],
+      },
+      `
+      Object {
+        "people": Array [
+          Object {
+            "pets": Array [
+              Object {
+                "name": Any<String>,
+              },
+              Object {
+                "name": Any<String>,
+              },
+            ],
+          },
+        ],
+      }
+    `
+    )
+  })
 })

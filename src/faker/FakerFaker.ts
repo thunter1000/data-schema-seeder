@@ -9,22 +9,29 @@ export default class FakerFaker implements IFaker {
   }
 
   private schemaReducer = (schema: any): any =>
-    Object.keys(schema).reduce((acc: any, field: string) => {
+    Object.keys(schema).reduce((acc: any, key: string) => {
+      const value = schema[key]
       let generatedFake
-
-      switch (typeof schema[field]) {
+      switch (typeof value) {
         case "object":
-          generatedFake = this.schemaReducer(schema[field])
+          if (Array.isArray(value)) {
+            const [{ quantity }, s] = value
+            generatedFake = [...Array(quantity)].map(() =>
+              this.schemaReducer(s)
+            )
+          } else {
+            generatedFake = this.schemaReducer(value)
+          }
           break
         case "string":
         default:
-          generatedFake = fake(schema[field])
+          generatedFake = fake(value)
           break
       }
 
       return {
         ...acc,
-        [field]: generatedFake,
+        [key]: generatedFake,
       }
     }, {})
 
