@@ -25,7 +25,12 @@ export default class FakerFaker implements IFaker {
           break
         case "string":
         default:
-          generatedFake = fake(value)
+          try {
+            generatedFake = fake(value)
+          } catch (e) {
+            console.error(`Failed to parse specification ${key}:${value} ${e}`)
+            throw e
+          }
           break
       }
 
@@ -36,7 +41,11 @@ export default class FakerFaker implements IFaker {
     }, {})
 
   Fake(): any {
-    const schema = JSON.parse(this.schema)
-    return this.schemaReducer(schema)
+    try {
+      const schema = JSON.parse(this.schema)
+      return this.schemaReducer(schema)
+    } catch (e) {
+      throw new Error("Failed to parse schema file")
+    }
   }
 }

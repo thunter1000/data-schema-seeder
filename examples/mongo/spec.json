@@ -1,0 +1,23 @@
+{
+  "name": "{{name.firstName}} {{name.lastName}}",
+  "age": "{{datatype.number({ \"min\": 0, \"max\": 99 })}}",
+  "address": {
+    "streetAddress":"{{address.streetAddress}}",
+    "secondaryAddress":"{{address.secondaryAddress}}",
+    "secondaryAddress":"{{address.secondaryAddress}}",
+    "county":"{{address.county}}"
+  },
+  "contact": [
+    {
+      "quantity": 3
+    },
+    {
+      "type": "{{random.arrayElement([\"work\", \"mobile\", \"home\"])}}",
+      "number": "{{phone.phoneNumber}}"
+    }
+  ],
+  "emails": [
+    { "quantity": 2 },
+    "{{internet.email}}"
+  ]
+}

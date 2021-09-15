@@ -43,8 +43,10 @@
   },
   "dependencies": {
     "@types/faker": "^5.5.8",
+    "commander": "^8.2.0",
     "faker": "^5.5.3",
     "i": "^0.3.6",
+    "mongodb": "^4.1.2",
     "npm": "^7.23.0"
   }
 }
