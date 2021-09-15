@@ -8,11 +8,29 @@ describe("Given record generation", () => {
 
   let generator: Generator
 
+  let mockedFaker: IMock<IFaker>
+
   const givenFakeData = "fake data"
+  const givenFakeData2 = "fake data 2"
 
   beforeEach(() => {
     mockedDestination = IDestinationMockProvider()
-    const mockedFaker = IFakerMockProvider(givenFakeData)
+
+    let fakerCallCount = 0
+
+    mockedFaker = IFakerMockProvider(givenFakeData)
+      .setup((i) => i.Fake())
+      .callback(() => {
+        fakerCallCount += 1
+        switch (fakerCallCount) {
+          case 1:
+            return givenFakeData
+          case 2:
+            return givenFakeData2
+          default:
+            return givenFakeData
+        }
+      })
 
     generator = new Generator(mockedDestination.object(), mockedFaker.object())
   })
@@ -31,7 +49,12 @@ describe("Given record generation", () => {
     mockedDestination.verify(
       (i) =>
         i.Process(It.Is(([fakeData]: any[]) => fakeData === givenFakeData)),
-      Times.Exactly(2)
+      Times.Once()
+    )
+    mockedDestination.verify(
+      (i) =>
+        i.Process(It.Is(([fakeData]: any[]) => fakeData === givenFakeData2)),
+      Times.Once()
     )
   })
 })
