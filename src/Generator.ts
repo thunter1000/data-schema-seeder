@@ -1,3 +1,6 @@
+import { IDestination } from "./destination/IDestination"
+import { IFaker } from "./faker/IFaker"
+
 export interface IGenerator {
   generate(count: number): void
 }

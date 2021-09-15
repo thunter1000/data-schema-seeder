@@ -1,4 +1,6 @@
-import { It, Mock, Times, IMock } from "moq.ts"
+import { It, Times, IMock } from "moq.ts"
+import { IFaker } from "./faker/IFaker"
+import { IDestination } from "./destination/IDestination"
 import IDestinationMockProvider from "./destination/__mocks__/IDestinationMockProvider"
 import IFakerMockProvider from "./faker/__mocks__/IFakerMockProvider"
 import { Generator } from "./Generator"

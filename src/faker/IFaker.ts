@@ -1,3 +1,3 @@
-interface IFaker {
+export interface IFaker {
   Fake(): any
 }

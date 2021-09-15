@@ -1,4 +1,5 @@
 import { fake } from "faker"
+import { IFaker } from "./IFaker"
 
 export default class FakerFaker implements IFaker {
   schema: string
