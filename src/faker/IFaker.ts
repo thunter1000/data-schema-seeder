@@ -1,0 +1,3 @@
+interface IFaker {
+  Fake(): any
+}
