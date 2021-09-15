@@ -3,6 +3,7 @@
   "version": "1.0.1-1",
   "description": "",
   "main": "index.js",
+  "bin": "dist/app.js",
   "scripts": {
     "build-ts": "tsc",
     "build": "npm run build-ts",
