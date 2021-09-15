@@ -1,6 +1,19 @@
 import { fake } from "faker"
 import { IFaker } from "./IFaker"
 
+const generateFake = (fieldName: string, fakeSpec: string): any => {
+  try {
+    const result = fake(fakeSpec)
+
+    return Number(result) || result
+  } catch (e) {
+    console.error(
+      `Failed to parse specification ${fieldName}: ${fakeSpec} ${e}`
+    )
+    throw e
+  }
+}
+
 export default class FakerFaker implements IFaker {
   schema: string
 
@@ -17,7 +30,9 @@ export default class FakerFaker implements IFaker {
           if (Array.isArray(value)) {
             const [{ quantity }, s] = value
             generatedFake = [...Array(quantity)].map(() =>
-              this.schemaReducer(s)
+              typeof s === "string"
+                ? generateFake(`${key}[]`, s)
+                : this.schemaReducer(s)
             )
           } else {
             generatedFake = this.schemaReducer(value)
@@ -25,12 +40,7 @@ export default class FakerFaker implements IFaker {
           break
         case "string":
         default:
-          try {
-            generatedFake = fake(value)
-          } catch (e) {
-            console.error(`Failed to parse specification ${key}:${value} ${e}`)
-            throw e
-          }
+          generatedFake = generateFake(key, value)
           break
       }
 

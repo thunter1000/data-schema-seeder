@@ -144,4 +144,36 @@ describe("Given a schema a fake is returned", () => {
     `
     )
   })
+
+  it("Given a schema with an array without objects", () => {
+    const givenSchema = `
+{
+  "array": [
+    {
+      "quantity": 3
+    },
+    "{{datatype.number}}"
+  ]
+}
+`
+
+    const faker = new FakerFaker(givenSchema)
+
+    const result = faker.Fake()
+
+    expect(result).toMatchInlineSnapshot(
+      {
+        array: [expect.any(Number), expect.any(Number), expect.any(Number)],
+      },
+      `
+      Object {
+        "array": Array [
+          Any<Number>,
+          Any<Number>,
+          Any<Number>,
+        ],
+      }
+    `
+    )
+  })
 })
